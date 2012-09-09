@@ -1,0 +1,16 @@
+production:
+  adapter: <%=node["canvas"]["sql_db_driver"]%>
+  encoding: utf8
+  database: <%=node["canvas"]["sql_db_name"]%>
+  host: <%=node["canvas"]["sql_server"]%>
+  username: <%=node["canvas"]["sql_user"]%>
+  password: <%=node["canvas"]["sql_password"]%>
+  timeout: <%=node["canvas"]["sql_db_timeout"]%>
+  queue:
+    adapter: <%=node["canvas"]["sql_db_driver"]%>
+    encoding: utf8
+    database: <%=node["canvas"]["sql_queue_db_name"]%>
+    host: <%=node["canvas"]["sql_server"]%>
+    username: <%=node["canvas"]["sql_user"]%>
+    password: <%=node["canvas"]["sql_password"]%>
+    timeout: <%=node["canvas"]["sql_db_timeout"]%>

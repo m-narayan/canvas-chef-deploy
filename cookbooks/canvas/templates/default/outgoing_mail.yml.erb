@@ -1,0 +1,13 @@
+production:
+ <% if node["canvas"]["use_sendmail"] == true %>
+ 	delivery_method: "sendmail"
+ <% else %>
+  	address: "<%=node["canvas"]["outgoing_mail_server"]%>"
+ 	port: "<%=node["canvas"]["outgoing_mail_server_port"]%>"
+	user_name: "<%=node["canvas"]["outgoing_mail_server_user"]%>"
+	password: "<%=node["canvas"]["outgoing_mail_server_password"]%>"
+	authentication: "<%=node["canvas"]["outgoing_mail_server_auth_method"]%>" # plain, login, or cram_md5
+	domain: "<%=node["canvas"]["outgoing_mail_server_domain"]%>"
+	outgoing_address: "<%=node["canvas"]["outgoing_mail_server_email_address"]%>"
+	default_name: "<%=node["canvas"]["outgoing_mail_server_email_name"]%>"
+<% end %>

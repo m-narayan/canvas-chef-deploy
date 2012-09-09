@@ -1,0 +1,43 @@
+<VirtualHost *:80>
+
+	ServerName <%=node["canvas"]["fqdn"]%>
+	ServerAlias <%=node["canvas"]["files_fqdn"]%>
+	DocumentRoot <%=node["canvas"]["home_dir"]%>/lms/public
+	RewriteEngine On
+	RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+	RewriteCond %{REQUEST_URI} !^/health_check
+	RewriteCond %{REQUEST_URI} !^/server-status
+	RewriteCond %{REQUEST_URI} !^/crossdomain.xml
+	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L]  
+	ErrorLog <%=node["canvas"]["home_dir"]%>/apache_logs/errors.log
+	LogLevel warn
+	CustomLog <%=node["canvas"]["home_dir"]%>/apache_logs/access.log combined
+	<Directory <%=node["canvas"]["home_dir"]%>/lms/public>
+		Allow from all
+		Options -MultiViews
+		SetEnv RAILS_ENV production
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName <%=node["canvas"]["fqdn"]%>
+	ServerAlias <%=node["canvas"]["files_fqdn"]%>
+	DocumentRoot <%=node["canvas"]["home_dir"]%>/lms/public
+	ErrorLog <%=node["canvas"]["home_dir"]%>/apache_logs/errors.log
+	LogLevel warn
+	CustomLog <%=node["canvas"]["home_dir"]%>/apache_logs/access.log combined
+	SSLEngine on
+	BrowserMatch "MSIE [2-6]" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
+	BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+	SSLCertificateFile <%=node["canvas"]["apache_ssl_cert"]%>
+	SSLCertificateKeyFile <%=node["canvas"]["apache_ssl_key"]%>
+	<% if node["canvas"]["apache_ssl_chain"] != "NOCA"%> 
+	SSLCertificateChainFile <%=node["canvas"]["apache_ssl_chain"]%>
+	<% end %>
+	<Directory <%=node["canvas"]["home_dir"]%>/lms/public>
+		Allow from all
+		Options -MultiViews
+		SetEnv RAILS_ENV production
+
+	</Directory>
+</VirtualHost>

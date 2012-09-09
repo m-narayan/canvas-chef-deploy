@@ -1,0 +1,27 @@
+{
+	"name": "canvas",
+	"run_list": [
+		"recipe[redis]",
+		"recipe[postgresql::server]",
+		"recipe[canvas]"
+		],
+	"redis": {
+		"bind":"127.0.0.1",
+		"port":"6379",
+		"daemonize":"yes"
+		},
+	"postgresql": {
+		"password":{ "postgres":"helloworld" },
+		"hba": [ { "method":"md5", "address":"127.0.0.1/32" } ],
+		"listen_addresses":"127.0.0.1"
+		},
+	"canvas": {
+		"redis_server": "127.0.0.1",
+		"sql_server": "127.0.0.1",
+		"sql_user": "postgres",
+		"sql_password": "helloworld",
+		"fqdn": "canvas.local",
+		"files_fqdn": "canvasfiles.local",
+		"random_key":"231eb9704dc334012f4734f4001c42d158a3"
+		}
+}
