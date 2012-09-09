@@ -32,6 +32,22 @@ function help() {
 	echo
 }
 
+function display_finishup_directions() {
+	echo ""
+	echo "Alright, we are almost done, but we need to do some intial tasks!"
+	echo "Fist we need to populate the database with some inital data"
+	echo "in /opt/canvas/lms (unless you have altered your canvas home)"
+	echo ""
+	echo "RUN: RAILS_ENV=production bundle exec rake db:initial_setup"
+	echo ""
+	echo "Now, we need to restart apache and canvas_init...."
+	echo ""
+	echo "RUN: sudo /etc/init.d/apache2 restart"
+	echo "RUN: sudo /etc/init.d/canvas_init restart"
+	echo ""
+	echo "you should now have a working canvas install (At least i hope so!)"
+}
+
 function setup_apt_opscode() {
 	echo "Checking if we need to setup an Apt repo for OPSCODE"
 	if test -f /etc/apt/sources.list.d/opscode.list; then 
@@ -68,7 +84,7 @@ function install() {
 	apt-get install -q -y --force-yes $REQURIED_PACKAGES
 	
 	run_chef_solo
-	
+	display_finishup_directions
 }
 
 

@@ -12,6 +12,7 @@ default["canvas"]["sql_db_name"]  = "canvas_production"
 default["canvas"]["sql_queue_db_name"] = "canvas_queue_production"
 default["canvas"]["sql_db_timeout"] = 5000
 default["canvas"]["sql_db_driver"] = "postgresql"
+default["canvas"]["sql_db_create_db"] = false
 default["canvas"]["redis_server"] = "setme"
 default["canvas"]["fqdn"] = "canvas.local"
 default["canvas"]["files_fqdn"] = "canvas.local"
@@ -29,5 +30,4 @@ default["canvas"]["outgoing_mail_server_email_name"] = "The Learnistute"
 default["canvas"]["apache_ssl_key"] = "/etc/ssl/private/ssl-cert-snakeoil.key"
 default["canvas"]["apache_ssl_cert"] = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 default["canvas"]["apache_ssl_chain"] = "NOCA" # use "NOCA" if you do not have an SSL Certificate Chain File
-default["canvas"][""]
 default["canvas"][""]

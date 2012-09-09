@@ -4,16 +4,16 @@
 #
 
 %w( 
-  ruby ruby-dev zlib1g-dev rake rubygems libxml2-dev git-core openjdk-7-jre
+  ruby ruby-dev zlib1g-dev rake rubygems libxml2-dev git-core openjdk-7-jre zip unzip
   libmysqlclient-dev libxslt1-dev libsqlite3-dev libhttpclient-ruby nano imagemagick
-  irb  libpq-dev nodejs libxmlsec1-dev libcurl4-openssl-dev apache2 libapache2-mod-passenger
+  irb libpq-dev nodejs libxmlsec1-dev libcurl4-openssl-dev apache2 libapache2-mod-passenger
   ).each do |pkg|; package pkg; end
 
 service "apache2" do
   action :nothing
   supports :status => true, :start => true, :stop => true, :restart => true
 end
-  
+
 group node["canvas"]["system_group"] do
   gid node["canvas"]["system_gid"]
   members 'www-data'
@@ -27,6 +27,38 @@ user node["canvas"]["system_user"]  do
   shell "/bin/bash"
   supports :manage_home => true
 end
+
+# Try to create databases required for canvas
+ENV['CANVAS_DB_GEN_LOCK'] = "#{node["canvas"]["home_dir"]}/.DB_GEN_DONE"
+ENV['SQL_DB_NAME'] = node["canvas"]["sql_db_name"]
+ENV['SQL_QUEUE_DB_NAME'] = node["canvas"]["sql_queue_db_name"] 
+
+if node["canvas"]["sql_db_create_db"] == true
+  if ( node["canvas"]["sql_db_driver"] == "postgresql" ) and !File.file?("#{node["canvas"]["home_dir"]}/.DB_GEN_DONE")
+
+    script "Create Postgres Databases" do
+      interpreter "bash"
+    	user "postgres"
+    	cwd "/tmp"
+      code <<-EOH
+         /usr/bin/createdb $SQL_DB_NAME
+         /usr/bin/createdb $SQL_QUEUE_DB_NAME
+      EOH
+    end
+
+    script "Create DB Lock File" do
+      interpreter "bash"
+    	user node["canvas"]["system_user"] 
+    	cwd "/tmp"
+      code <<-EOH
+        touch $CANVAS_DB_GEN_LOCK
+      EOH
+    end
+
+  end
+end
+
+# END Try to create databases required for canvas
 
 directory "#{node["canvas"]["home_dir"]}/lms" do
   owner node["canvas"]["system_user"]
@@ -70,6 +102,7 @@ directory "#{node["canvas"]["home_dir"]}/lms/tmp/pids" do
   group  node["canvas"]["system_group"]
   mode 0755
   action :create
+  recursive true
 end
 
 script "Gem install Bundler" do
