@@ -5,5 +5,11 @@ Chef-Solo scripts to deploy Instructure Canvas on a Ubuntu 12.04LTS 64bit Machin
 
 Instructions
 ===========
+Make sure the data in node-canvas.json is good for your setup.  
 
-run sudo install-canvas.sh to install chef-solo and run run chef-solo to have canvas up and running.
+One thing you will likely wish to change is the FQDN parameter to tell apache where to host yourcanvas.yourdomain.com  
+
+This command installs canvas. 
+
+sudo install-canvas.sh -i 
+
