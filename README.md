@@ -32,7 +32,7 @@ One thing you will likely wish to change is the FQDN parameter to tell apache wh
 	RAILS_ENV=production bundle exec rake db:initial_setup
 	```
 
-5. Restart Apache & Reddis
+5. Restart Apache & Canvas_init
 	```bash
 	sudo /etc/init.d/apache2 restart
 	sudo /etc/init.d/canvas_init restart
