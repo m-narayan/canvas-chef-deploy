@@ -21,7 +21,7 @@ One thing you will likely wish to change is the FQDN parameter to tell apache wh
 	vim node-canvas.json
 	```
 
-3. Run the install
+3. Run the install ( Be sure your running this from the directory you cloned this project into.... )
 	```bash
 	sudo ./install-canvas.sh -i
 	```
