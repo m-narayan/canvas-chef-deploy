@@ -5,7 +5,7 @@ Opscode Cookbook for installing Instructure Canvas
 
 Requirements
 ============
-* Fresh install of ubuntu 64bit
+* Fresh install of ubuntu 64bit 12.04LTS, This will not work with older versions.
 * Internet access 
 * Postgres or Mysql (Recommend dedicated server)
 * Redis Server
