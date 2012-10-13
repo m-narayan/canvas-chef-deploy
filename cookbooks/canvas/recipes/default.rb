@@ -5,7 +5,7 @@
 
 %w( 
   ruby ruby-dev zlib1g-dev rake rubygems libxml2-dev git-core openjdk-7-jre zip unzip
-  libmysqlclient-dev libxslt1-dev libsqlite3-dev libhttpclient-ruby nano imagemagick
+  libmysqlclient-dev libxslt1-dev libsqlite3-dev libhttpclient-ruby nano imagemagick libssl-dev
   irb libpq-dev nodejs libxmlsec1-dev libcurl4-openssl-dev apache2 libapache2-mod-passenger
   ).each do |pkg|; package pkg; end
 
@@ -67,6 +67,15 @@ directory "#{node["canvas"]["home_dir"]}/lms" do
   action :create
 end
 
+git "#{node["canvas"]["home_dir"]}/lms" do
+  repository node["canvas"]["git_repo"] 
+  branch node["canvas"]["git_branch"]
+  action :sync
+  depth 1
+  user    node["canvas"]["system_user"]
+  group   node["canvas"]["system_group"]
+end
+
 directory "#{node["canvas"]["home_dir"]}/apache_logs" do
   owner node["canvas"]["system_user"]
   group  node["canvas"]["system_group"]
@@ -81,14 +90,7 @@ directory node["canvas"]["file_store_location"] do
   action :create
 end
 
-git "#{node["canvas"]["home_dir"]}/lms" do
-  repository node["canvas"]["git_repo"] 
-  branch node["canvas"]["git_branch"]
-  action :sync
-  depth 1
-  user    node["canvas"]["system_user"]
-  group   node["canvas"]["system_group"]
-end
+
 
 directory "#{node["canvas"]["home_dir"]}/lms/log" do
   owner node["canvas"]["system_user"]
@@ -121,7 +123,7 @@ script "Lets get the required GEMS" do
 	user "root"
 	cwd "#{node["canvas"]["home_dir"]}/lms"
   code <<-EOH
-     /bin/bash -ls -c " /usr/local/bin/bundle install"
+     /usr/local/bin/bundle install
   EOH
 end
 
