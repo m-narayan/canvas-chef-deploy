@@ -30,6 +30,12 @@ default["canvas"]["outgoing_mail_server_domain"] = "example.com"
 default["canvas"]["outgoing_mail_server_email_address"] = "canvas@example.com"
 default["canvas"]["outgoing_mail_server_email_name"] = "The Learnistute"
 
+# QTI TOOLS
+default["canvas"]["install_qti_tools"] = false
+default["canvas"]["qti_git_repo"] = "https://github.com/instructure/QTIMigrationTool.git"
+default["canvas"]["qti_git_branch"] = "master"
+
+
 #General Canvas Settings
 default["canvas"]["redis_server"]       = "setme"
 default["canvas"]["fqdn"] = "canvas.local"

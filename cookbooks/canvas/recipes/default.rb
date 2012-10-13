@@ -264,6 +264,7 @@ script "Link canvas_init" do
 	code "ln -s $CANVAS_INIT /etc/init.d/canvas_init"
 end
 
+
 service "canvas_init" do
   action :nothing
   supports :status => true, :start => true, :stop => true, :restart => true
@@ -277,6 +278,35 @@ script "enable canvas_init during boot" do
 	code "update-rc.d canvas_init defaults"
 	notifies :start, "service[canvas_init]", :immediately
 end
+
+#See if we should install QTI Tools
+
+if node["canvas"]["install_qti_tools"] == true
+
+  directory "#{node["canvas"]["home_dir"]}/lms/vendor/QTIMigrationTool" do
+    owner node["canvas"]["system_user"]
+    group  node["canvas"]["system_group"]
+    mode 0755
+    action :create
+  end
+
+  git "#{node["canvas"]["home_dir"]}/lms/vendor/QTIMigrationTool" do
+    repository node["canvas"]["qti_git_repo"]
+    branch node["canvas"]["qti_git_branch"]
+    action :sync
+    depth 1
+    user    node["canvas"]["system_user"]
+    group   node["canvas"]["system_group"]
+    notifies :start, "service[canvas_init]", :immediately
+  	
+  end
+  
+end
+
+
+# End QTI tools
+
+
 
 
 
