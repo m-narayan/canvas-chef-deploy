@@ -22,6 +22,7 @@
 		"sql_password": "helloworld",
 		"fqdn": "canvas.local",
 		"random_key":"231eb9704dc334012f4734f4001c42d158a3",
-		"sql_db_create_db": true
+		"sql_db_create_db": true,
+		"install_qti_tools": true
 		}
 }

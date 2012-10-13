@@ -9,7 +9,7 @@ Requirements
 * Internet access 
 * Postgres or Mysql (Recommend dedicated server)
 * Redis Server
-* Mail Server / Unix Sendmail Compatible also works like postgres / exim
+* Mail Server / Unix Sendmail Compatible also works like postfix / exim
 * For production use, also recommend an real SSL Certificate, this cookbook does not install them, but you can reference by Path.
 * Canvas can use lots of memory and CPU you may want to dedicate a full server for this (or more depending on load), Also if your running on AWS
 start with an m1.large instance.

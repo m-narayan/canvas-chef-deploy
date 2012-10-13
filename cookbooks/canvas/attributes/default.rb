@@ -16,7 +16,7 @@ default["canvas"]["sql_server"]   = "setme"
 default["canvas"]["sql_db_name"]  = "canvas_production"
 default["canvas"]["sql_queue_db_name"]  = "canvas_queue_production"
 default["canvas"]["sql_db_timeout"]     = 5000
-default["canvas"]["sql_db_driver"]      = "postgresql"
+default["canvas"]["sql_db_driver"]      = "postgresql" #can be mysql as well
 default["canvas"]["sql_db_create_db"]   = false
 
 #Outoging Mail Setttings
