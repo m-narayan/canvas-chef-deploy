@@ -3,6 +3,9 @@
 	"run_list": [
 		"recipe[redis]",
 		"recipe[postgresql::server]",
+		"recipe[canvas:installruby]",
+		"recipe[nginx::source]",
+		"recipe[nginx::passenger]"
 		"recipe[canvas]"
 		],
 	"redis": {
@@ -24,5 +27,11 @@
 		"random_key":"231eb9704dc334012f4734f4001c42d158a3",
 		"sql_db_create_db": true,
 		"install_qti_tools": true
+		},
+	"nginx": {
+		"gzip":"on",
+		"passenger": {
+			"ruby": "/usr/bin/ruby1.9.1"
 		}
+	}
 }

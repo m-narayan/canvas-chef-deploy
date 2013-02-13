@@ -14,30 +14,30 @@
   ).each do |pkg|; package pkg; end
 
 
-script "Update default gem" do
-  not_if do ::File.readlink("/etc/alternatives/gem") == "/usr/bin/gem1.9.1"; end
-  interpreter "bash"
-	user "root"
-	cwd "/tmp"
-  code <<-EOH
-      /usr/sbin/update-alternatives  --set gem /usr/bin/gem1.9.1 
-  EOH
-end
+# script "Update default gem" do
+#   not_if do ::File.readlink("/etc/alternatives/gem") == "/usr/bin/gem1.9.1"; end
+#   interpreter "bash"
+#   user "root"
+#   cwd "/tmp"
+#   code <<-EOH
+#       /usr/sbin/update-alternatives  --set gem /usr/bin/gem1.9.1 
+#   EOH
+# end
+# 
+# script "Update default Ruby" do
+#   not_if do ::File.readlink("/etc/alternatives/ruby") == "/usr/bin/ruby1.9.1"; end
+#   interpreter "bash"
+#   user "root"
+#   cwd "/tmp"
+#   code <<-EOH
+#       /usr/sbin/update-alternatives  --set ruby /usr/bin/ruby1.9.1
+#   EOH
+# end
 
-script "Update default Ruby" do
-  not_if do ::File.readlink("/etc/alternatives/ruby") == "/usr/bin/ruby1.9.1"; end
-  interpreter "bash"
-	user "root"
-	cwd "/tmp"
-  code <<-EOH
-      /usr/sbin/update-alternatives  --set ruby /usr/bin/ruby1.9.1
-  EOH
-end
-
-service "apache2" do
-  action :nothing
-  supports :status => true, :start => true, :stop => true, :restart => true
-end
+# service "apache2" do
+#   action :nothing
+#   supports :status => true, :start => true, :stop => true, :restart => true
+# end
 
 group node["canvas"]["system_group"] do
   gid node["canvas"]["system_gid"]
@@ -101,12 +101,12 @@ git "#{node["canvas"]["home_dir"]}/lms" do
   group   node["canvas"]["system_group"]
 end
 
-directory "#{node["canvas"]["home_dir"]}/apache_logs" do
-  owner node["canvas"]["system_user"]
-  group  node["canvas"]["system_group"]
-  mode 0755
-  action :create
-end
+# directory "#{node["canvas"]["home_dir"]}/apache_logs" do
+#   owner node["canvas"]["system_user"]
+#   group  node["canvas"]["system_group"]
+#   mode 0755
+#   action :create
+# end
 
 directory node["canvas"]["file_store_location"] do
   owner node["canvas"]["system_user"]
@@ -225,60 +225,60 @@ script "Compile Assets" do
   EOH
 end
 
-script "Enable required apache passenger module" do
-  interpreter "bash"
-	user "root"
-	cwd "/tmp"
-	not_if do ::File.symlink?('/etc/apache2/mods-enabled/passenger.load') end
-  code <<-EOH
-    /bin/bash -ls -c "a2enmod passenger"
-  EOH
-end
-
-script "enable required apache rewrite module" do
-  interpreter "bash"
-	user "root"
-	cwd "/tmp"
-	not_if do ::File.symlink?('/etc/apache2/mods-enabled/rewrite.load') end
-  code <<-EOH
-    /bin/bash -ls -c "a2enmod rewrite"
-  EOH
-end
-
-script "enable required apache ssl module" do
-  interpreter "bash"
-	user "root"
-	cwd "/tmp"
-	not_if do ::File.symlink?('/etc/apache2/mods-enabled/ssl.load') end
-  code <<-EOH
-    /bin/bash -ls -c "a2enmod ssl"
-  EOH
-end
-
-script "Remove old apache factory config" do
-  only_if do ::File.symlink?( "/etc/apache2/sites-enabled/000-default") end
-  interpreter "bash"
-  user "root"
-  code <<-EOH
-    a2dissite default
-  EOH
-end
-
-template "/etc/apache2/sites-available/canvas-apache.conf" do
-  source "canvas-apache.conf.erb"
-	owner "root"
-	group "root"
-	mode 0444
-end
-
-script "Enable apache config" do
-  not_if do ::File.symlink?('/etc/apache2/sites-enabled/canvas-apache.conf') end  
-	interpreter "bash"
-	user "root"
-	cwd "/tmp"
-	code "a2ensite canvas-apache.conf"
-  notifies :restart, "service[apache2]", :immediately
-end
+# script "Enable required apache passenger module" do
+#   interpreter "bash"
+#   user "root"
+#   cwd "/tmp"
+#   not_if do ::File.symlink?('/etc/apache2/mods-enabled/passenger.load') end
+#   code <<-EOH
+#     /bin/bash -ls -c "a2enmod passenger"
+#   EOH
+# end
+# 
+# script "enable required apache rewrite module" do
+#   interpreter "bash"
+#   user "root"
+#   cwd "/tmp"
+#   not_if do ::File.symlink?('/etc/apache2/mods-enabled/rewrite.load') end
+#   code <<-EOH
+#     /bin/bash -ls -c "a2enmod rewrite"
+#   EOH
+# end
+# 
+# script "enable required apache ssl module" do
+#   interpreter "bash"
+#   user "root"
+#   cwd "/tmp"
+#   not_if do ::File.symlink?('/etc/apache2/mods-enabled/ssl.load') end
+#   code <<-EOH
+#     /bin/bash -ls -c "a2enmod ssl"
+#   EOH
+# end
+# 
+# script "Remove old apache factory config" do
+#   only_if do ::File.symlink?( "/etc/apache2/sites-enabled/000-default") end
+#   interpreter "bash"
+#   user "root"
+#   code <<-EOH
+#     a2dissite default
+#   EOH
+# end
+# 
+# template "/etc/apache2/sites-available/canvas-apache.conf" do
+#   source "canvas-apache.conf.erb"
+#   owner "root"
+#   group "root"
+#   mode 0444
+# end
+# 
+# script "Enable apache config" do
+#   not_if do ::File.symlink?('/etc/apache2/sites-enabled/canvas-apache.conf') end  
+#   interpreter "bash"
+#   user "root"
+#   cwd "/tmp"
+#   code "a2ensite canvas-apache.conf"
+#   notifies :restart, "service[apache2]", :immediately
+# end
 
 ENV['CANVAS_INIT'] = "#{node["canvas"]["home_dir"]}/lms/script/canvas_init"
 script "Link canvas_init" do
