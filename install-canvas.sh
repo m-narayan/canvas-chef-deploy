@@ -81,7 +81,7 @@ function install() {
 	setup_apt_opscode
 	
 	echo "Instailling required packages! (${REQURIED_PACKAGES})"
-	apt-get install -q -y --force-yes $REQURIED_PACKAGES
+	DEBIAN_FRONTEND=noninteractive apt-get install -q -y --force-yes $REQURIED_PACKAGES
 	
 	run_chef_solo
 	display_finishup_directions
