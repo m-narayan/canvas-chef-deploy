@@ -14,7 +14,6 @@ The following cookbooks are direct dependencies because they're used
 for common "default" functionality.
 
 * build-essential (for nginx::source)
-* ohai (for nginx::ohai_plugin)
 
 The following cookbook is not a strict dependency because its use can
 be controlled by an attribute, so it may not be a common "default."
@@ -249,12 +248,7 @@ using the `nxensite` and `nxdissite` scripts. The nginx service will
 be managed with the normal init scripts that are presumably included
 in the native package.
 
-Includes the `ohai_plugin` recipe so the plugin is available.
 
-## ohai_plugin.rb
-
-This recipe provides an Ohai plugin as a template. It is included by
-both the `default` and `source` recipes.
 
 ## authorized_ips.rb
 
@@ -324,22 +318,6 @@ adding the configure flags. Add any other configuration templates or
 other resources as required. See the recipes described above for
 examples.
 
-Ohai Plugin
-===========
-
-The `ohai_plugin` recipe includes an Ohai plugin. It will be
-automatically installed and activated, providing the following
-attributes via ohai, no matter how nginx is installed (source or
-package):
-
-* `node['nginx']['version']` - version of nginx
-* `node['nginx']['configure_arguments']` - options passed to
-  ./configure when nginx was built
-* `node['nginx']['prefix']` - installation prefix
-* `node['nginx']['conf_path']` - configuration file path
-
-In the source recipe, it is used to determine whether control
-attributes for building nginx have changed.
 
 Usage
 =====

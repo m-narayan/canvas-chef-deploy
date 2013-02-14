@@ -4,7 +4,7 @@
 		"recipe[redis]",
 		"recipe[postgresql::server]",
 		"recipe[canvas:installruby]",
-		"recipe[nginx::source]",
+		"recipe[nginx]",
 		"recipe[nginx::passenger]",
 		"recipe[canvas]"
 		],

@@ -46,7 +46,6 @@ user node['nginx']['user'] do
   home "/var/www"
 end
 
-include_recipe "nginx::ohai_plugin"
 include_recipe "nginx::commons_dir"
 include_recipe "nginx::commons_script"
 include_recipe "build-essential"
