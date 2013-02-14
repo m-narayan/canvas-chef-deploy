@@ -18,11 +18,16 @@
 # limitations under the License.
 #
 
+include_recipe 'nginx::ohai_plugin'
 
 case node['nginx']['install_method']
 when 'source'
   include_recipe 'nginx::source'
 when 'package'
+  case node['platform']
+  when 'redhat','centos','scientific','amazon','oracle'
+    include_recipe 'yum::epel'
+  end
   package node['nginx']['package_name']
   service 'nginx' do
     supports :status => true, :restart => true, :reload => true

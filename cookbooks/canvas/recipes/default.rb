@@ -15,7 +15,6 @@
 
 #chmod o+w  /opt/canvas/lms/tmp
 
-
 include_recipe "nginx::default"
 
 
@@ -86,12 +85,12 @@ git "#{node["canvas"]["home_dir"]}/lms" do
   group   node["canvas"]["system_group"]
 end
 
-# directory "#{node["canvas"]["home_dir"]}/apache_logs" do
-#   owner node["canvas"]["system_user"]
-#   group  node["canvas"]["system_group"]
-#   mode 0755
-#   action :create
-# end
+directory "#{node["canvas"]["home_dir"]}/lms/tmp" do
+  user    node["canvas"]["system_user"]
+  group   node["canvas"]["system_group"]
+  action :create
+  mode 0755
+end
 
 directory node["canvas"]["file_store_location"] do
   owner node["canvas"]["system_user"]
@@ -99,8 +98,6 @@ directory node["canvas"]["file_store_location"] do
   mode 0755
   action :create
 end
-
-
 
 directory "#{node["canvas"]["home_dir"]}/lms/log" do
   owner node["canvas"]["system_user"]
@@ -123,7 +120,7 @@ script "Gem install Bundler" do
 	user "root"
 	cwd "/tmp"
   code <<-EOH
-      /bin/bash -ls -c "gem install bundle --no-rdoc --no-ri"
+      /bin/bash -ls -c "gem1.9.1 install bundle --no-rdoc --no-ri"
   EOH
 end
 
@@ -135,6 +132,13 @@ script "Lets get the required GEMS" do
   code <<-EOH
      /usr/local/bin/bundle install
   EOH
+end
+
+template "#{node["canvas"]["home_dir"]}/lms/script/delayed_job" do
+	source "script-delayed_job.erb"
+	owner "canvas"
+	group "canvas"
+	mode 0755
 end
 
 template "/etc/profile.d/canvas-enviroment.sh" do
@@ -210,60 +214,31 @@ script "Compile Assets" do
   EOH
 end
 
-# script "Enable required apache passenger module" do
-#   interpreter "bash"
-#   user "root"
-#   cwd "/tmp"
-#   not_if do ::File.symlink?('/etc/apache2/mods-enabled/passenger.load') end
-#   code <<-EOH
-#     /bin/bash -ls -c "a2enmod passenger"
-#   EOH
-# end
-# 
-# script "enable required apache rewrite module" do
-#   interpreter "bash"
-#   user "root"
-#   cwd "/tmp"
-#   not_if do ::File.symlink?('/etc/apache2/mods-enabled/rewrite.load') end
-#   code <<-EOH
-#     /bin/bash -ls -c "a2enmod rewrite"
-#   EOH
-# end
-# 
-# script "enable required apache ssl module" do
-#   interpreter "bash"
-#   user "root"
-#   cwd "/tmp"
-#   not_if do ::File.symlink?('/etc/apache2/mods-enabled/ssl.load') end
-#   code <<-EOH
-#     /bin/bash -ls -c "a2enmod ssl"
-#   EOH
-# end
-# 
-# script "Remove old apache factory config" do
-#   only_if do ::File.symlink?( "/etc/apache2/sites-enabled/000-default") end
-#   interpreter "bash"
-#   user "root"
-#   code <<-EOH
-#     a2dissite default
-#   EOH
-# end
-# 
-# template "/etc/apache2/sites-available/canvas-apache.conf" do
-#   source "canvas-apache.conf.erb"
-#   owner "root"
-#   group "root"
-#   mode 0444
-# end
-# 
-# script "Enable apache config" do
-#   not_if do ::File.symlink?('/etc/apache2/sites-enabled/canvas-apache.conf') end  
-#   interpreter "bash"
-#   user "root"
-#   cwd "/tmp"
-#   code "a2ensite canvas-apache.conf"
-#   notifies :restart, "service[apache2]", :immediately
-# end
+
+script "Remove old Nginx factory config" do
+  only_if do ::File.symlink?( "/etc/nginx/sites-enabled/000-default") end
+  interpreter "bash"
+  user "root"
+  code <<-EOH
+    nxdissite default
+  EOH
+end
+
+template "/etc/nginx/sites-available/canvas" do
+  source "nginx-site.erb"
+  owner "root"
+  group "root"
+  mode 0444
+end
+
+script "Enable nginx config" do
+  not_if do ::File.symlink?('/etc/nginx/sites-enabled/canvas') end  
+  interpreter "bash"
+  user "root"
+  cwd "/tmp"
+  code "nxensite canvas"
+  notifies :restart, "service[nginx]", :immediately
+end
 
 ENV['CANVAS_INIT'] = "#{node["canvas"]["home_dir"]}/lms/script/canvas_init"
 script "Link canvas_init" do

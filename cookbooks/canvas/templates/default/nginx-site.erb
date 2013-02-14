@@ -1,7 +1,7 @@
 server  {
                listen 80;
-               server_name mydomain.com;
-               root /opt/canvas/lms/public/;
+               server_name <%=node["canvas"]["fqdn"]%> <%=node["canvas"]["files_fqdn"]%>;
+               root <%=node["canvas"]["home_dir"]%>/lms/public;
                passenger_enabled on;
                rails_env production;
         }
@@ -9,15 +9,12 @@ server  {
 # HTTPS server
 server  {
                listen 443;
-               server_name mydomain.com;
-               root /opt/canvas/lms/public/;
+               server_name <%=node["canvas"]["fqdn"]%> <%=node["canvas"]["files_fqdn"]%>;
+               root <%=node["canvas"]["home_dir"]%>/lms/public;
                passenger_enabled on;
                rails_env production;
-
                ssl on;
-               ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
-               ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
-
+               ssl_certificate <%=node["canvas"]["apache_ssl_cert"]%>;
+               ssl_certificate_key <%=node["canvas"]["apache_ssl_key"]%>;
                ssl_session_timeout  5m;
         }
-

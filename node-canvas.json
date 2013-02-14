@@ -35,7 +35,7 @@
 			"modules": [
 			"http_ssl_module",
 			"passenger",
-			"upload_progress_module"
+			"http_gzip_static_module"
 			]
 		},
 		"passenger": {

@@ -28,12 +28,11 @@ One thing you will likely wish to change is the FQDN parameter to tell apache wh
 
 4. Populate the Database
 	```bash
-	cd /opt/canvas/lms
-	RAILS_ENV=production bundle exec rake db:initial_setup
+	 sudo -u canvas /bin/bash -c "( cd /opt/canvas/lms && RAILS_ENV=production bundle exec rake db:initial_setup ) "
 	```
 
-5. Restart Apache & Canvas_init
+5. Restart Nginx & Canvas_init
 	```bash
-	sudo /etc/init.d/apache2 restart
+	sudo /etc/init.d/nginx restart
 	sudo /etc/init.d/canvas_init restart
 	```

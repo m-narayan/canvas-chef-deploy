@@ -46,11 +46,14 @@ user node['nginx']['user'] do
   home "/var/www"
 end
 
+include_recipe "nginx::ohai_plugin"
 include_recipe "nginx::commons_dir"
 include_recipe "nginx::commons_script"
 include_recipe "build-essential"
 
-src_filepath  = "#{Chef::Config['file_cache_path'] || '/tmp'}/nginx-#{node['nginx']['version']}.tar.gz"
+#src_filepath  = "#{Chef::Config['file_cache_path'] || '/tmp'}/nginx-#{node['nginx']['version']}.tar.gz"
+src_filepath  = "/tmp/nginx-#{node['nginx']['version']}.tar.gz"
+
 packages = value_for_platform(
     ["centos","redhat","fedora","amazon","scientific"] => {'default' => ['pcre-devel', 'openssl-devel']},
     "gentoo" => {"default" => []},
@@ -63,7 +66,7 @@ end
 
 remote_file nginx_url do
   source nginx_url
-  checksum node['nginx']['source']['checksum']
+  #checksum node['nginx']['source']['checksum']
   path src_filepath
   backup false
 end

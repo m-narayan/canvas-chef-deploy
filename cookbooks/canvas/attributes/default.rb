@@ -44,3 +44,4 @@ default["canvas"]["file_store_location"] = "/opt/canvas/lms/file_store"
 default["canvas"]["apache_ssl_key"] = "/etc/ssl/private/ssl-cert-snakeoil.key"
 default["canvas"]["apache_ssl_cert"] = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 default["canvas"]["apache_ssl_chain"] = "NOCA" # use "NOCA" if you do not have an SSL Certificate Chain File
+default["canvas"]["ruby_bin"] = "/usr/bin/ruby1.9.1"

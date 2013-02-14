@@ -21,6 +21,14 @@ if [ $# -eq 0 ] ; then
 fi
 
 
+function ihascrashed() {
+	echo 
+	echo "Hmm, Somthing seems to have gone wrong, you need to find out what happend."
+	echo "Before proceeding. Sorry Dude!"
+	echo 
+	exit 1
+}
+
 function help() {
 	echo 
 	echo "Welcome to help!, if your reading this you may need Help!"
@@ -38,11 +46,11 @@ function display_finishup_directions() {
 	echo "Fist we need to populate the database with some inital data"
 	echo "in /opt/canvas/lms (unless you have altered your canvas home)"
 	echo ""
-	echo "RUN: RAILS_ENV=production bundle exec rake db:initial_setup"
+	echo "RUN: sudo -u canvas /bin/bash -c \"( cd /opt/canvas/lms && RAILS_ENV=production bundle exec rake db:initial_setup ) \""
 	echo ""
-	echo "Now, we need to restart apache and canvas_init...."
+	echo "Now, we need to restart nginx and canvas_init...."
 	echo ""
-	echo "RUN: sudo /etc/init.d/apache2 restart"
+	echo "RUN: sudo /etc/init.d/nginx restart"
 	echo "RUN: sudo /etc/init.d/canvas_init restart"
 	echo ""
 	echo "you should now have a working canvas install (At least i hope so!)"
@@ -66,6 +74,11 @@ function setup_apt_opscode() {
 function run_chef_solo() {
 	echo "Running Chef:"
 	chef-solo -c $CHEF_SOLO_CONFIG -j $RUN_LIST
+	if [ $? -eq 0 ];then
+	   echo "Chef has run Sucessfully!"
+	else
+	   ihascrashed
+	fi
 }
 
 function install() {
