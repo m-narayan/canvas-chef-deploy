@@ -1,9 +1,8 @@
 #
-# Cookbook Name:: nginx
+# Cookbook Name:: build-essential
 # Recipe:: default
-# Author:: AJ Christensen <aj@junglist.gen.nz>
 #
-# Copyright 2008-2012, Opscode, Inc.
+# Copyright 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,21 +17,29 @@
 # limitations under the License.
 #
 
-include_recipe 'nginx::ohai_plugin'
-
-case node['nginx']['install_method']
-when 'source'
-  include_recipe 'nginx::source'
-when 'package'
-  package node['nginx']['package_name']
-  service 'nginx' do
-    supports :status => true, :restart => true, :reload => true
-    action :enable
+case node['platform']
+when "ubuntu","debian"
+  %w{build-essential binutils-doc}.each do |pkg|
+    package pkg do
+      action :install
+    end
   end
-  include_recipe 'nginx::commons'
+when "centos","redhat","fedora"
+  %w{gcc gcc-c++ kernel-devel make}.each do |pkg|
+    package pkg do
+      action :install
+    end
+  end
 end
 
-service 'nginx' do
-  supports :status => true, :restart => true, :reload => true
-  action :start
+package "autoconf" do
+  action :install
+end
+
+package "flex" do
+  action :install
+end
+
+package "bison" do
+  action :install
 end

@@ -5,7 +5,7 @@
 		"recipe[postgresql::server]",
 		"recipe[canvas:installruby]",
 		"recipe[nginx::source]",
-		"recipe[nginx::passenger]"
+		"recipe[nginx::passenger]",
 		"recipe[canvas]"
 		],
 	"redis": {
@@ -30,6 +30,7 @@
 		},
 	"nginx": {
 		"gzip":"on",
+        "install_method":"package",	
 		"passenger": {
 			"ruby": "/usr/bin/ruby1.9.1"
 		}
