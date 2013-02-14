@@ -10,34 +10,19 @@
   build-essential libopenssl-ruby1.9.1 libssl-dev 
   zlib1g-dev rake rubygems libxml2-dev git-core openjdk-7-jre zip unzip
   libmysqlclient-dev libxslt1-dev libsqlite3-dev libhttpclient-ruby nano imagemagick libssl-dev
-  irb libpq-dev nodejs libxmlsec1-dev libcurl4-openssl-dev apache2 libapache2-mod-passenger
+  irb libpq-dev nodejs libxmlsec1-dev libcurl4-openssl-dev
   ).each do |pkg|; package pkg; end
 
+#chmod o+w  /opt/canvas/lms/tmp
 
-# script "Update default gem" do
-#   not_if do ::File.readlink("/etc/alternatives/gem") == "/usr/bin/gem1.9.1"; end
-#   interpreter "bash"
-#   user "root"
-#   cwd "/tmp"
-#   code <<-EOH
-#       /usr/sbin/update-alternatives  --set gem /usr/bin/gem1.9.1 
-#   EOH
-# end
-# 
-# script "Update default Ruby" do
-#   not_if do ::File.readlink("/etc/alternatives/ruby") == "/usr/bin/ruby1.9.1"; end
-#   interpreter "bash"
-#   user "root"
-#   cwd "/tmp"
-#   code <<-EOH
-#       /usr/sbin/update-alternatives  --set ruby /usr/bin/ruby1.9.1
-#   EOH
-# end
 
-# service "apache2" do
-#   action :nothing
-#   supports :status => true, :start => true, :stop => true, :restart => true
-# end
+include_recipe "nginx::default"
+
+
+service "nginx" do
+  action :nothing
+  supports :status => true, :start => true, :stop => true, :restart => true
+end
 
 group node["canvas"]["system_group"] do
   gid node["canvas"]["system_gid"]

@@ -1,0 +1,23 @@
+server  {
+               listen 80;
+               server_name mydomain.com;
+               root /opt/canvas/lms/public/;
+               passenger_enabled on;
+               rails_env production;
+        }
+
+# HTTPS server
+server  {
+               listen 443;
+               server_name mydomain.com;
+               root /opt/canvas/lms/public/;
+               passenger_enabled on;
+               rails_env production;
+
+               ssl on;
+               ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
+               ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
+
+               ssl_session_timeout  5m;
+        }
+
