@@ -148,6 +148,19 @@ template "/etc/profile.d/canvas-enviroment.sh" do
 	mode 0444
 end
 
+
+if ((node["canvas"]["s3_bucket_name"] != nil) && (node["canvas"]["s3_access_key_id"] != nil) && (node["canvas"]["s3_secret_access_key"] != nil))
+    template "#{node["canvas"]["home_dir"]}/lms/config/amazon_s3.yml" do
+  	source "amazon-s3.yml.erb"
+    owner node["canvas-ng"]["system_user"]
+    group  node["canvas-ng"]["system_group"]
+  	mode 0644
+    end
+end
+
+
+
+
 template "#{node["canvas"]["home_dir"]}/lms/config/database.yml" do
 	source "database.yml.erb"
   owner node["canvas"]["system_user"]

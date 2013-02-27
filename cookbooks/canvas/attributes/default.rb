@@ -45,3 +45,8 @@ default["canvas"]["apache_ssl_key"] = "/etc/ssl/private/ssl-cert-snakeoil.key"
 default["canvas"]["apache_ssl_cert"] = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 default["canvas"]["apache_ssl_chain"] = "NOCA" # use "NOCA" if you do not have an SSL Certificate Chain File
 default["canvas"]["ruby_bin"] = "/usr/bin/ruby1.9.1"
+
+#Amazon S3
+default["canvas"]["s3_bucket_name"] = nil
+default["canvas"]["s3_access_key_id"] = nil
+default["canvas"]["s3_secret_access_key"] = nil

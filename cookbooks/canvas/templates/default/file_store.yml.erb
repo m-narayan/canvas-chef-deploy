@@ -1,5 +1,8 @@
+<%if ((node["canvas"]["s3_bucket_name"] != nil) && (node["canvas"]["s3_access_key_id"] != nil) && (node["canvas"]["s3_secret_access_key"] != nil))%>
+production:
+  storage: s3
+<%else%>
 production:
   storage: local
   path_prefix: <%=node["canvas"]["file_store_location"]%>
-
-
+<%end%>
