@@ -9,7 +9,7 @@
 # Short-Description: starts the nginx web server
 # Description:       starts nginx using start-stop-daemon
 ### END INIT INFO
-
+export LC_ALL=”en_US.UTF-8″
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=<%= @src_binary %>
 NAME=nginx

@@ -2,6 +2,9 @@ server  {
                listen 80;
                server_name <%=node["canvas"]["fqdn"]%> <%=node["canvas"]["files_fqdn"]%>;
                root <%=node["canvas"]["home_dir"]%>/lms/public;
+			   charset utf-8;
+			   include mime.types;
+			   default_type application/octet-stream;
                passenger_enabled on;
                rails_env production;
         }
@@ -11,6 +14,9 @@ server  {
                listen 443;
                server_name <%=node["canvas"]["fqdn"]%> <%=node["canvas"]["files_fqdn"]%>;
                root <%=node["canvas"]["home_dir"]%>/lms/public;
+			   charset utf-8;
+			   include mime.types;
+			   default_type application/octet-stream;
                passenger_enabled on;
                rails_env production;
                ssl on;
