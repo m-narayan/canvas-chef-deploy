@@ -1,3 +1,8 @@
+
+NOTE: THIS VERSION IS NO LONGER MATAINED AND NO UPDATES WILL BE MADE
+====================================================================
+
+
 chef-canvas
 ===========
 
