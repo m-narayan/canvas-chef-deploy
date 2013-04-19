@@ -16,7 +16,6 @@ end
   depends cb
 end
 
-depends 'ohai', '>= 1.1.4'
 
 %w{ bluepill yum }.each do |cb|
   recommends cb

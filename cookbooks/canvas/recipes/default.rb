@@ -8,7 +8,7 @@
 
 %w( ruby1.9.1 ruby1.9.1-dev rubygems1.9.1 irb1.9.1 ri1.9.1 rdoc1.9.1
   build-essential libopenssl-ruby1.9.1 libssl-dev 
-  zlib1g-dev rake rubygems libxml2-dev git-core openjdk-7-jre zip unzip
+  zlib1g-dev rubygems libxml2-dev git-core openjdk-7-jre zip unzip
   libmysqlclient-dev libxslt1-dev libsqlite3-dev libhttpclient-ruby nano imagemagick libssl-dev
   irb libpq-dev nodejs libxmlsec1-dev libcurl4-openssl-dev
   ).each do |pkg|; package pkg; end
@@ -17,6 +17,17 @@
 
 include_recipe "nginx::default"
 
+#script "Set Default Ruby for your system" do
+#	interpreter "bash"
+#	user "root"
+#	cwd "/tmp"
+#	code "update-alternatives --set ruby /usr/bin/ruby1.9.1"
+#end
+
+#gem_package "chef" do
+#	gem_binary("/usr/bin/gem1.9.1")
+#	options("--no-rdoc --no-ri")
+#end
 
 service "nginx" do
   action :nothing
@@ -114,24 +125,22 @@ directory "#{node["canvas"]["home_dir"]}/lms/tmp/pids" do
   recursive true
 end
 
-script "Gem install Bundler" do
-  not_if do ::File.file?('/usr/local/bin/bundle') end
-  interpreter "bash"
-	user "root"
-	cwd "/tmp"
-  code <<-EOH
-      /bin/bash -ls -c "gem1.9.1 install bundle --no-rdoc --no-ri"
-  EOH
+gem_package "bundler" do
+	gem_binary("/usr/bin/gem1.9.1")
+	options("--no-rdoc --no-ri")
 end
 
+gem_package "debugger" do
+	gem_binary("/usr/bin/gem1.9.1")
+	options("--no-rdoc --no-ri")
+end
+    
 script "Lets get the required GEMS" do
-  not_if do ::File.file?('#{node["canvas"]["home_dir"]}/lms/Gemfile.lock') end
-  interpreter "bash"
+	not_if do ::File.file?('#{node["canvas"]["home_dir"]}/lms/Gemfile.lock') end
+	interpreter "bash"
 	user "root"
 	cwd "#{node["canvas"]["home_dir"]}/lms"
-  code <<-EOH
-     /usr/local/bin/bundle install
-  EOH
+	code "bundle"
 end
 
 template "#{node["canvas"]["home_dir"]}/lms/script/delayed_job" do
@@ -218,13 +227,10 @@ template "#{node["canvas"]["home_dir"]}/lms/config/security.yml" do
 end
 
 script "Compile Assets" do
-  interpreter "bash"
-	user node["canvas"]["system_user"]
+	interpreter "bash"
 	cwd "#{node["canvas"]["home_dir"]}/lms"
 	not_if do ::File.directory?("#{node["canvas"]["home_dir"]}/lms/public/assets") end
-  code <<-EOH
-      /usr/local/bin/bundle exec rake canvas:compile_assets
-  EOH
+	code "bundle exec rake canvas:compile_assets"
 end
 
 
