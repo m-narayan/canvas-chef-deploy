@@ -3,31 +3,33 @@
 # Recipe:: default
 #
 
-# Ubuntu's 1.9.3 ruby packages are called 1.9.1 <<---- 
+# https://launchpad.net/~brightbox/+archive/passenger-nginx
+# https://launchpad.net/~brightbox/+archive/ppa
 
+include_recipe "apt"
 
-%w( ruby1.9.1 ruby1.9.1-dev rubygems1.9.1 irb1.9.1 ri1.9.1 rdoc1.9.1
-  build-essential libopenssl-ruby1.9.1 libssl-dev 
-  zlib1g-dev rubygems libxml2-dev git-core openjdk-7-jre zip unzip
-  libmysqlclient-dev libxslt1-dev libsqlite3-dev libhttpclient-ruby nano imagemagick libssl-dev
-  irb libpq-dev nodejs libxmlsec1-dev libcurl4-openssl-dev
-  ).each do |pkg|; package pkg; end
+apt_repository "Brightbox RUBY-NG" do
+  uri "http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu"
+  distribution "precise"
+  components ["main"]
+  keyserver "keyserver.ubuntu.com"
+  key "C3173AA6"
+  notifies :run, resources(:execute => "apt-get update"), :immediately
+end
 
-#chmod o+w  /opt/canvas/lms/tmp
+apt_repository "Brightbox NGINX" do
+  uri "http://ppa.launchpad.net/brightbox/passenger-nginx/ubuntu"
+  distribution "precise"
+  components ["main"]
+  keyserver "keyserver.ubuntu.com"
+  key "C3173AA6"
+  notifies :run, resources(:execute => "apt-get update"), :immediately
+end
 
-include_recipe "nginx::default"
-
-#script "Set Default Ruby for your system" do
-#	interpreter "bash"
-#	user "root"
-#	cwd "/tmp"
-#	code "update-alternatives --set ruby /usr/bin/ruby1.9.1"
-#end
-
-#gem_package "chef" do
-#	gem_binary("/usr/bin/gem1.9.1")
-#	options("--no-rdoc --no-ri")
-#end
+%w( ruby1.9.3 zlib1g-dev libxml2-dev libmysqlclient-dev libxslt1-dev 
+ imagemagick libpq-dev nodejs libxmlsec1-dev libcurl4-gnutls-dev 
+ libxmlsec1 build-essential openjdk-7-jre git-core zip unzip
+ libpq-dev nodejs passenger ruby-switch nginx-full).each do |pkg|; package pkg; end
 
 service "nginx" do
   action :nothing
@@ -126,29 +128,29 @@ directory "#{node["canvas"]["home_dir"]}/lms/tmp/pids" do
 end
 
 gem_package "bundler" do
-	gem_binary("/usr/bin/gem1.9.1")
+	gem_binary("/usr/bin/gem1.9.3")
 	options("--no-rdoc --no-ri")
 end
 
-gem_package "debugger" do
-	gem_binary("/usr/bin/gem1.9.1")
-	options("--no-rdoc --no-ri")
-end
+# gem_package "debugger" do
+#   gem_binary("/usr/bin/gem1.9.1")
+#   options("--no-rdoc --no-ri")
+# end
     
 script "Lets get the required GEMS" do
 	not_if do ::File.file?('#{node["canvas"]["home_dir"]}/lms/Gemfile.lock') end
 	interpreter "bash"
 	user "root"
 	cwd "#{node["canvas"]["home_dir"]}/lms"
-	code "bundle"
+	code "bundle --path vendor/bundle --without=sqlite"
 end
 
-template "#{node["canvas"]["home_dir"]}/lms/script/delayed_job" do
-	source "script-delayed_job.erb"
-	owner "canvas"
-	group "canvas"
-	mode 0755
-end
+# template "#{node["canvas"]["home_dir"]}/lms/script/delayed_job" do
+#   source "script-delayed_job.erb"
+#   owner "canvas"
+#   group "canvas"
+#   mode 0755
+# end
 
 template "/etc/profile.d/canvas-enviroment.sh" do
 	source "canvas-enviorment.sh.erb"
@@ -166,9 +168,6 @@ if ((node["canvas"]["s3_bucket_name"] != nil) && (node["canvas"]["s3_access_key_
   	mode 0644
     end
 end
-
-
-
 
 template "#{node["canvas"]["home_dir"]}/lms/config/database.yml" do
 	source "database.yml.erb"
