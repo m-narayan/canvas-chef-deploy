@@ -8,7 +8,7 @@
 
 include_recipe "apt"
 
-apt_repository "Brightbox RUBY-NG" do
+apt_repository "Brightbox_ruby_ng" do
   uri "http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu"
   distribution "precise"
   components ["main"]
@@ -17,19 +17,19 @@ apt_repository "Brightbox RUBY-NG" do
   notifies :run, resources(:execute => "apt-get update"), :immediately
 end
 
-apt_repository "Brightbox NGINX" do
-  uri "http://ppa.launchpad.net/brightbox/passenger-nginx/ubuntu"
-  distribution "precise"
-  components ["main"]
-  keyserver "keyserver.ubuntu.com"
-  key "C3173AA6"
-  notifies :run, resources(:execute => "apt-get update"), :immediately
-end
+#apt_repository "Brightbox NGINX" do
+#  uri "http://ppa.launchpad.net/brightbox/passenger-nginx/ubuntu"
+#  distribution "precise"
+#  components ["main"]
+#  keyserver "keyserver.ubuntu.com"
+#  key "C3173AA6"
+#  notifies :run, resources(:execute => "apt-get update"), :immediately
+#end
 
 %w( ruby1.9.3 zlib1g-dev libxml2-dev libmysqlclient-dev libxslt1-dev 
  imagemagick libpq-dev nodejs libxmlsec1-dev libcurl4-gnutls-dev 
  libxmlsec1 build-essential openjdk-7-jre git-core zip unzip
- libpq-dev nodejs passenger ruby-switch nginx-full).each do |pkg|; package pkg; end
+ libpq-dev nodejs passenger-common1.9.1 ruby-switch nginx-full ).each do |pkg|; package pkg; end
 
 service "nginx" do
   action :nothing
@@ -234,12 +234,11 @@ end
 
 
 script "Remove old Nginx factory config" do
-  only_if do ::File.symlink?( "/etc/nginx/sites-enabled/000-default") end
+  only_if do ::File.symlink?( "/etc/nginx/sites-enabled/default") end
   interpreter "bash"
   user "root"
-  code <<-EOH
-    nxdissite default
-  EOH
+  code "rm -v default"
+  cwd "/etc/nginx/sites-enabled"
 end
 
 template "/etc/nginx/sites-available/canvas" do
@@ -253,8 +252,8 @@ script "Enable nginx config" do
   not_if do ::File.symlink?('/etc/nginx/sites-enabled/canvas') end  
   interpreter "bash"
   user "root"
-  cwd "/tmp"
-  code "nxensite canvas"
+  cwd "/etc/nginx/sites-enabled/"
+  code "ln -sn ../sites-available/canvas "
   notifies :restart, "service[nginx]", :immediately
 end
 
