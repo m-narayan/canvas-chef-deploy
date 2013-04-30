@@ -1,3 +1,5 @@
+client_max_body_size 4000M;
+
 server  {
                listen 80;
                server_name <%=node["canvas"]["fqdn"]%> <%=node["canvas"]["files_fqdn"]%>;

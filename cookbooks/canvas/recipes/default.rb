@@ -132,11 +132,6 @@ gem_package "bundler" do
 	options("--no-rdoc --no-ri")
 end
 
-# gem_package "debugger" do
-#   gem_binary("/usr/bin/gem1.9.1")
-#   options("--no-rdoc --no-ri")
-# end
-    
 script "Lets get the required GEMS" do
 	not_if do ::File.file?('#{node["canvas"]["home_dir"]}/lms/Gemfile.lock') end
 	interpreter "bash"
@@ -145,15 +140,16 @@ script "Lets get the required GEMS" do
 	code "bundle --path vendor/bundle --without=sqlite"
 end
 
-# template "#{node["canvas"]["home_dir"]}/lms/script/delayed_job" do
-#   source "script-delayed_job.erb"
-#   owner "canvas"
-#   group "canvas"
-#   mode 0755
-# end
 
 template "/etc/profile.d/canvas-enviroment.sh" do
 	source "canvas-enviorment.sh.erb"
+	owner "root"
+	group "root"
+	mode 0444
+end
+
+template "/etc/nginx/nginx.conf" do
+	source "nginx.conf.erb"
 	owner "root"
 	group "root"
 	mode 0444
