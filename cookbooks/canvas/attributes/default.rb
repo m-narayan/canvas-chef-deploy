@@ -41,9 +41,8 @@ default["canvas"]["redis_server"]       = "setme"
 default["canvas"]["fqdn"] = "canvas.local"
 default["canvas"]["random_key"] = "you-really-need-to-set-me"
 default["canvas"]["file_store_location"] = "/opt/canvas/lms/file_store"
-default["canvas"]["apache_ssl_key"] = "/etc/ssl/private/ssl-cert-snakeoil.key"
-default["canvas"]["apache_ssl_cert"] = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
-default["canvas"]["apache_ssl_chain"] = "NOCA" # use "NOCA" if you do not have an SSL Certificate Chain File
+default["canvas"]["ssl_key"] = "/etc/ssl/private/ssl-cert-snakeoil.key"
+default["canvas"]["ssl_cert"] = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 default["canvas"]["ruby_bin"] = "/usr/bin/ruby1.9.1"
 
 #Amazon S3

@@ -4,7 +4,6 @@
 		"recipe[redis]",
 		"recipe[postgresql::server]",
 		"recipe[canvas]"
-		
 		],
 	"redis": {
 		"bind":"127.0.0.1",
@@ -25,24 +24,5 @@
 		"random_key":"231eb9704dc334012f4734f4001c42d158a3",
 		"sql_db_create_db": true,
 		"install_qti_tools": true
-		},
-	"nginx": {
-		"gzip":"on",
-		"init_style" : "init",
-        "install_method":"source",
-		"package_name":"nginx-full",
-		"source": {
-			"modules": [
-			"http_ssl_module",
-			"passenger",
-			"http_gzip_static_module"
-			]
-		},
-		"passenger": {
-			"ruby": "/usr/bin/ruby1.9.1",
-			"version":"3.0.19",
-			"root":"/var/lib/gems/1.9.1/gems/passenger-3.0.19/",
-			"gem_binary":"/usr/bin/gem1.9.1"
 		}
-	}
 }

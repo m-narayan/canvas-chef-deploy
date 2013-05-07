@@ -61,9 +61,8 @@ Below are the default values for the attribues being used in this cookbook
 * ["canvas"]["fqdn"] = "canvas.local" (for production this should be your DNS name for Canvas!)
 * ["canvas"]["random_key"] = "you-really-need-to-set-me"
 * ["canvas"]["file_store_location"] = "/opt/canvas/lms/file_store"
-* ["canvas"]["apache_ssl_key"] = "/etc/ssl/private/ssl-cert-snakeoil.key"
-* ["canvas"]["apache_ssl_cert"] = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
-* ["canvas"]["apache_ssl_chain"] = "NOCA" # use "NOCA" if you do not have an SSL Certificate Chain File
+* ["canvas"]["ssl_key"] = "/etc/ssl/private/ssl-cert-snakeoil.key"
+* ["canvas"]["ssl_cert"] = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 
 
 Usage

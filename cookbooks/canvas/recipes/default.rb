@@ -228,6 +228,11 @@ script "Compile Assets" do
 	code "bundle exec rake canvas:compile_assets"
 end
 
+script "Compress Assets" do
+	interpreter "bash"
+	cwd "#{node["canvas"]["home_dir"]}/lms"
+	code "bundle exec rake canvas:compress_assets"
+end
 
 script "Remove old Nginx factory config" do
   only_if do ::File.symlink?( "/etc/nginx/sites-enabled/default") end
