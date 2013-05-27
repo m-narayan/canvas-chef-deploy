@@ -26,7 +26,7 @@ end
 #  notifies :run, resources(:execute => "apt-get update"), :immediately
 #end
 
-%w( ruby1.9.3 zlib1g-dev libxml2-dev libmysqlclient-dev libxslt1-dev 
+%w( ruby1.9.3 zlib1g-dev libxml2-dev postgresql-client libpq-dev libxslt1-dev
  imagemagick libpq-dev nodejs libxmlsec1-dev libcurl4-gnutls-dev 
  libxmlsec1 build-essential openjdk-7-jre git-core zip unzip
  libpq-dev nodejs passenger-common1.9.1 ruby-switch nginx-full ).each do |pkg|; package pkg; end

@@ -1,0 +1,28 @@
+client_max_body_size 4000M;
+
+server  {
+               listen 80;
+               server_name <%=node["cas_server"]["fqdn"]%> ;
+               root <%=node["cas_server"]["home_dir"]%>/<%=node["cas_server"]["name"]%>/public;
+			   charset utf-8;
+			   include mime.types;
+			   default_type application/octet-stream;
+               passenger_enabled on;
+               rails_env production;
+        }
+
+# HTTPS server
+server  {
+               listen 443;
+               server_name <%=node["cas_server"]["fqdn"]%>;
+               root <%=node["cas_server"]["home_dir"]%>/<%=node["cas_server"]["name"]%>/public;
+			   charset utf-8;
+			   include mime.types;
+			   default_type application/octet-stream;
+               passenger_enabled on;
+               rails_env production;
+               ssl on;
+               ssl_certificate <%=node["cas_server"]["ssl_cert"]%>;
+               ssl_certificate_key <%=node["cas_server"]["ssl_key"]%>;
+               ssl_session_timeout  5m;
+        }

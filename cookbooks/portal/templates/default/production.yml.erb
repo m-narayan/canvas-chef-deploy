@@ -1,0 +1,36 @@
+cas:
+  enable: <%=node["portal"]["cas_server_enable"]%>
+  expiry: 28800 #8 hour
+  url: <%=node["portal"]["cas_server_url"]%>
+  login_path: '/cas/api-login'
+  logout_path: '/cas/api-logout'
+lms:
+  enable:  <%=node["portal"]["lms_enable"]%>
+  account_id:  <%=node["portal"]["lms_account_id"]%>
+  oauth_token: <%=node["portal"]["lms_oauth_token"]%>
+  root_url:  <%=node["portal"]["lms_root_url"]%>
+  course_url_path: /courses/
+  api_root_url: <%=node["portal"]["lms_root_url"]%>/api/v1
+  logout_path: logout
+mailserver:
+  address: <%=node["portal"]["mailserver_address"]%>
+  port: <%=["portal"]["outgoing_mail_server_port"]%>
+  domain: <%=node["portal"]["mailserver_domain"]%>
+  user_name: <%=node["portal"]["mailserver_user_name"]%>
+  password: <%=node["portal"]["mailserver_password"]%>
+admin_mail:
+  to: <%=node["portal"]["mailserver_admin_mail"]%>
+payment_gateway:
+  enable:  <%=node["portal"]["payment_gateway_enable"]%>
+  merchant_id: <%=node["portal"]["payment_gateway_merchant_id"]%>
+  work_key: <%=node["portal"]["payment_gateway_work_key"]%>
+  ccavenue_account: <%=node["portal"]["payment_gateway_ccavenue_account"]%>
+invoices:
+  notes: "Thank you for your enrollment!"
+omniauth:
+  facebook_key:    <%=node["portal"]["omniauth_facebook_key"]%>
+  facebook_secret: <%=node["portal"]["omniauth_facebook_secret"]%>
+  linkedin_key:    <%=node["portal"]["omniauth_linkedin_key"]%>
+  linkedin_secret: <%=node["portal"]["omniauth_linkedin_secret"]%>
+  google_oauth2_key: <%=node["portal"]["omniauth_google_oauth2_key"]%>
+  google_oauth2_secret: <%=node["portal"]["omniauth_google_oauth2_secret"]%>

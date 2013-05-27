@@ -1,0 +1,24 @@
+client_max_body_size 4000M;
+
+server {
+                listen      80;
+                server_name  <%=node["portal"]["fqdn"]%>
+                # rewrite     ^   https://$server_name$request_uri? permanent;
+                return 301 https://<%=node["portal"]["fqdn"]%>$request_uri;
+}
+
+# HTTPS server
+server  {
+               listen 443;
+               server_name <%=node["portal"]["fqdn"]%>
+               root <%=node["portal"]["home_dir"]%>/<%=node["portal"]["name"]%>/public;
+			   charset utf-8;
+			   include mime.types;
+			   default_type application/octet-stream;
+               passenger_enabled on;
+               rails_env production;
+               ssl on;
+               ssl_certificate <%=node["portal"]["ssl_cert"]%>;
+               ssl_certificate_key <%=node["portal"]["ssl_key"]%>;
+               ssl_session_timeout  5m;
+        }
