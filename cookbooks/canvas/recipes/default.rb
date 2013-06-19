@@ -5,6 +5,7 @@
 
 # https://launchpad.net/~brightbox/+archive/passenger-nginx
 # https://launchpad.net/~brightbox/+archive/ppa
+# http://ppa.launchpad.net/brightbox/passenger-experimental/ubuntu
 
 include_recipe "apt"
 
@@ -17,14 +18,15 @@ apt_repository "Brightbox_ruby_ng" do
   notifies :run, resources(:execute => "apt-get update"), :immediately
 end
 
-#apt_repository "Brightbox NGINX" do
-#  uri "http://ppa.launchpad.net/brightbox/passenger-nginx/ubuntu"
-#  distribution "precise"
-#  components ["main"]
-#  keyserver "keyserver.ubuntu.com"
-#  key "C3173AA6"
-#  notifies :run, resources(:execute => "apt-get update"), :immediately
-#end
+apt_repository "Brightbox NGINX" do
+ #uri "http://ppa.launchpad.net/brightbox/passenger-nginx/ubuntu"
+ uri "http://ppa.launchpad.net/brightbox/passenger-experimental/ubuntu"
+ distribution "precise"
+ components ["main"]
+ keyserver "keyserver.ubuntu.com" 
+ key "C3173AA6"  
+ notifies :run, resources(:execute => "apt-get update"), :immediately
+end
 
 %w( ruby1.9.3 zlib1g-dev libxml2-dev postgresql-client libpq-dev libxslt1-dev
  imagemagick libpq-dev nodejs libxmlsec1-dev libcurl4-gnutls-dev 
@@ -302,6 +304,28 @@ if node["canvas"]["install_qti_tools"] == true
     group   node["canvas"]["system_group"]
     notifies :start, "service[canvas_init]", :immediately
   	
+  end
+
+  #canvas-mt plugin install
+  git "#{node["canvas"]["home_dir"]}/lms/vendor/canvas-mt" do
+    repository node["canvas"]["canvas_mt_git_repo"]
+    branch node["canvas"]["canvas_mt_git_branch"]
+    action :sync
+    depth 1
+    user    node["canvas"]["system_user"]
+    group   node["canvas"]["system_group"]   
+    
+  end
+
+  #lms customization plugin install
+  git "#{node["canvas"]["home_dir"]}/lms/vendor/lms_customization" do
+    repository node["canvas"]["lms_customization_git_repo"]
+    branch node["canvas"]["lms_customization_git_branch"]
+    action :sync
+    depth 1
+    user    node["canvas"]["system_user"]
+    group   node["canvas"]["system_group"]   
+    
   end
   
 end

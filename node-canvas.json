@@ -11,18 +11,27 @@
 		"daemonize":"yes"
 		},
 	"postgresql": {
-		"password":{ "postgres":"helloworld" },
+		"password":{ "canvas":"canvas" },
 		"hba": [ { "method":"md5", "address":"127.0.0.1/32" } ],
 		"listen_addresses":"127.0.0.1"
 		},
 	"canvas": {
+		"home_dir": "/var/canvas",
+		"system_user": "canvasuser",
+		"system_group": "canvasuser",
 		"redis_server": "127.0.0.1",
 		"sql_server": "127.0.0.1",
-		"sql_user": "postgres",
-		"sql_password": "helloworld",
-		"fqdn": "canvas.local",
+		"sql_user": "canvas",
+		"sql_password": "canvas",
+		"fqdn": "lms.arrivu.corecloud.com",
 		"random_key":"231eb9704dc334012f4734f4001c42d158a3",
 		"sql_db_create_db": true,
-		"install_qti_tools": true
+		"install_qti_tools": true,		
+		"git_repo": "https://github.com/m-narayan/canvas-lms.git",
+		"git_branch": "develop",
+		"canvas_mt_git_repo": "https://github.com/m-narayan/canvas-mt.git",
+		"canvas_mt_git_branch": "develop",
+		"lms_customization_git_repo": "https://github.com/m-narayan/lms_customization.git",
+		"lms_customization_git_branch": "develop"		
 		}
 }
