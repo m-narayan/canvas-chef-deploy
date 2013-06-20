@@ -17,6 +17,7 @@
 		},
 	"canvas": {
 		"home_dir": "/var/canvas",
+		"file_store_location": "/var/canvas/file_store",		
 		"system_user": "canvasuser",
 		"system_group": "canvasuser",
 		"redis_server": "127.0.0.1",
